@@ -1,0 +1,6 @@
+enum Status {
+  NA_FILA,
+  EM_ATENDIMENTO,
+  ATENDIDO,
+  ENCERRADO,
+}

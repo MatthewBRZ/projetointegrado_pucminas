@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/Product.dart';
+import '../Models/Product.dart';
 
 class ProductCatalog extends StatefulWidget {
   const ProductCatalog({super.key});
@@ -10,8 +10,7 @@ class ProductCatalog extends StatefulWidget {
 }
 
 class _ProductCatalogState extends State<ProductCatalog> {
-
-    final List<Product> products = [
+  final List<Product> products = [
     Product(
       name: 'Baguete',
       description: 'Pão tipo baguete / kg',

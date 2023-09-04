@@ -1,9 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:projetointegrado_pucminas/FirebaseData/firebase_options.dart';
+import 'Views/mainPage.dart';
 
-import 'Pages/mainPage.dart';
-
-void main() {
+void main() async {
   runApp(const MyApp());
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.web,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,13 +19,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      
       theme: ThemeData(
         primarySwatch: Colors.brown,
-        
       ),
       home: MainPage(),
     );
   }
- 
 }
