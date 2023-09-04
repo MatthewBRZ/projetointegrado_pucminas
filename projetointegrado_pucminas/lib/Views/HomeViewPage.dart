@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Utils/BakeryInfoWidget.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:projetointegrado_pucminas/Views/LoginViewPage.dart';
+import 'package:projetointegrado_pucminas/Views/QrCodeViewPage.dart';
 
 class HomeViewPage extends StatefulWidget {
   const HomeViewPage({super.key});
@@ -12,8 +12,17 @@ class HomeViewPage extends StatefulWidget {
 }
 
 class _HomeViewPageState extends State<HomeViewPage> {
-  final isWeb = kIsWeb;
   final navController = ScreenNavController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +71,14 @@ class _HomeViewPageState extends State<HomeViewPage> {
                     color: Color(0xFFC68958),
                     thickness: 10,
                   ),
-                  const CircleAvatar(
-                    radius: 125,
-                    backgroundImage:
-                        AssetImage('assets/images/bakery_logo.png'),
-                    backgroundColor: Colors.transparent,
+                  const Hero(
+                    tag: 'bakeryLogo',
+                    child: CircleAvatar(
+                      radius: 125,
+                      backgroundImage:
+                          AssetImage('assets/images/bakery_logo.png'),
+                      backgroundColor: Colors.transparent,
+                    ),
                   ),
                   const Text(
                     'SISTEMA DE AUTOATENDIMENTO',
@@ -80,7 +92,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                   InkWell(
                       //TO DO ***********************************
                       onTap: () {
-                        (!isWeb) ? 'callFunction' : 'do Nothing';
+                        navController.navigateToScreen(QrCodeViewPage());
                       },
                       child: SizedBox(
                           width: 100,
@@ -90,20 +102,13 @@ class _HomeViewPageState extends State<HomeViewPage> {
                             fit: BoxFit.contain,
                           ))),
                   const SizedBox(height: 15),
-                  (!isWeb)
-                      ? const Text(
-                          'LER QR CODE',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'baskervville',
-                              fontWeight: FontWeight.bold),
-                        )
-                      : const Text('USE UM CELULAR PARA ACESSAR',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'baskervville',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red)),
+                  const Text(
+                    'LER QR CODE',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'baskervville',
+                        fontWeight: FontWeight.bold),
+                  ),
 
                   const SizedBox(height: 30),
                   // Call External Widget to fulfill info about bakery
