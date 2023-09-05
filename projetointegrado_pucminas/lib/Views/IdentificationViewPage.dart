@@ -23,6 +23,16 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
   final formValidator = FormValidator();
 
   @override
+  void initState() {
+    super.initState();
+    // Initializing Forms
+    inputFormBuilder = InputFormBuilder(
+      hintText: 'Digite o seu nome',
+      validatorCallback: (value) => formValidator.clientValidator(value),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
@@ -72,11 +82,7 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
                           ))),
                   DefaultText(text: 'QUAL O SEU NOME?', fontSize: 20),
                   // ID FORM
-                  inputFormBuilder = InputFormBuilder(
-                    hintText: 'Digite o seu nome',
-                    validatorCallback: (value) =>
-                        formValidator.clientValidator(value),
-                  ),
+                  inputFormBuilder,
                   // Button to access the Menu
                   ElevatedButton(
                     onPressed: () {

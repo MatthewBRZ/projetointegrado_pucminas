@@ -1,8 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
-import 'package:projetointegrado_pucminas/Utils/DefaultText.dart';
 
 class MenuViewPage extends StatefulWidget {
   const MenuViewPage({super.key});
@@ -85,21 +83,26 @@ class _MenuViewPageState extends State<MenuViewPage> {
                 Center(
                   child: items.isEmpty
                       ? const CircularProgressIndicator() // Placeholder for loading state
-                      : Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                child: ListTile(
-                                  leading: const Icon(Icons.restaurant_menu),
-                                  title: Text(items[index]),
-                                ),
-                              );
-                            },
+                      : SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: items.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    child: ListTile(
+                                      leading:
+                                          const Icon(Icons.restaurant_menu),
+                                      title: Text(items[index]),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                ),
+                )
               ],
             ),
           ),

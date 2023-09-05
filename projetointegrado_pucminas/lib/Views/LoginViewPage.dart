@@ -3,7 +3,6 @@ import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
 import '../Utils/DefaultText.dart';
 import '../Utils/FormValidator.dart';
-import 'MenuViewPage.dart';
 
 class LoginViewPage extends StatefulWidget {
   const LoginViewPage({super.key});
@@ -17,6 +16,19 @@ class _LoginViewPageState extends State<LoginViewPage> {
   late InputFormBuilder idFormBuilder;
   late InputFormBuilder passFormBuilder;
   final formValidator = FormValidator();
+
+  @override
+  void initState() {
+    super.initState();
+    //Initializing Forms
+    idFormBuilder = InputFormBuilder(
+        hintText: 'ID',
+        validatorCallback: (value) => formValidator.userValidator(value));
+    // PASS FORM
+    passFormBuilder = InputFormBuilder(
+        hintText: 'SENHA',
+        validatorCallback: (value) => formValidator.passValidator(value));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +75,9 @@ class _LoginViewPageState extends State<LoginViewPage> {
                         DefaultText(text: 'LOGIN FUNCIONÁRIOS', fontSize: 20),
                   ),
                   // ID FORM
-                  idFormBuilder = InputFormBuilder(
-                      hintText: 'ID',
-                      validatorCallback: (value) =>
-                          formValidator.userValidator(value)),
+                  idFormBuilder,
                   // PASS FORM
-                  passFormBuilder = InputFormBuilder(
-                      hintText: 'SENHA',
-                      validatorCallback: (value) =>
-                          formValidator.passValidator(value)),
+                  passFormBuilder,
                   // Spacing
                   const SizedBox(height: 15),
                   // Login Button

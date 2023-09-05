@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projetointegrado_pucminas/Utils/FormValidator.dart';
 
 class InputFormBuilder extends StatelessWidget {
   final GlobalKey<FormState> form = GlobalKey<FormState>();

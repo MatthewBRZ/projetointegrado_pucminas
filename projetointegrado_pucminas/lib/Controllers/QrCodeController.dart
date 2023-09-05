@@ -1,5 +1,4 @@
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:mobile_scanner/mobile_scanner_web.dart';
 
 class QrCodeController {
   final MobileScannerController controller = MobileScannerController(
