@@ -1,16 +1,7 @@
 # projetointegrado_pucminas
 
-A new Flutter project.
+Projeto de conclusão de especialização em eng. de software
 
-## Getting Started
+## PROJETO
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Projeto feito usando Flutter desenvolvendo um sistema de comandas para padarias em nuvem, através de aplicação do tipo Web App.
