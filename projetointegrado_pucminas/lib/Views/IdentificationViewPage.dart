@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:projetointegrado_pucminas/Controllers/QrCodeController.dart';
+import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
-import 'package:projetointegrado_pucminas/Controllers/TablesController.dart';
+import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
 import 'package:projetointegrado_pucminas/Utils/DefaultText.dart';
+import 'package:projetointegrado_pucminas/Utils/FormValidator.dart';
+import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
+import 'package:projetointegrado_pucminas/Views/MenuViewPage.dart';
 
 class IdentificationViewPage extends StatefulWidget {
-  const IdentificationViewPage({super.key});
+  const IdentificationViewPage({super.key, required this.qrCodeInfo});
+
+  final TableController qrCodeInfo;
 
   @override
   State<IdentificationViewPage> createState() => _IdentificationViewPageState();
@@ -14,21 +18,21 @@ class IdentificationViewPage extends StatefulWidget {
 
 class _IdentificationViewPageState extends State<IdentificationViewPage> {
   final navController = ScreenNavController();
-  final qrCodeController = QrCodeController();
-  final TablesController tableController = TablesController();
-  String qrCodeResult = '';
+  final inputController = InputControllers();
+  late InputFormBuilder inputFormBuilder;
+  final formValidator = FormValidator();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: SingleChildScrollView(
-            child: Column(
+        body: SafeArea(
+            child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
@@ -44,6 +48,14 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
                       fit: BoxFit.contain,
                     ))) // Adjust the fit as needed.
             ,
+            Align(
+              alignment: Alignment.topRight,
+              child: DefaultText(
+                text:
+                    '${widget.qrCodeInfo.tableType}-${widget.qrCodeInfo.tableNumber}',
+                fontSize: 20,
+              ),
+            ),
             Center(
               child: Column(
                 children: [
@@ -59,12 +71,39 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
                             ),
                           ))),
                   DefaultText(text: 'QUAL O SEU NOME?', fontSize: 20),
+                  // ID FORM
+                  inputFormBuilder = InputFormBuilder(
+                    hintText: 'Digite o seu nome',
+                    validatorCallback: (value) =>
+                        formValidator.clientValidator(value),
+                  ),
+                  // Button to access the Menu
+                  ElevatedButton(
+                    onPressed: () {
+                      // Validate the inputForm before goes to another screen
+                      if (inputFormBuilder.form.currentState!.validate()) {
+                        navController.navigateToScreen(const MenuViewPage());
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DefaultText(
+                        text: 'ACESSAR CARDÁPIO',
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
-        )),
-      )),
-    );
+        ),
+      ),
+    )));
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
+import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
 import '../Utils/DefaultText.dart';
+import '../Utils/FormValidator.dart';
+import 'MenuViewPage.dart';
 
 class LoginViewPage extends StatefulWidget {
   const LoginViewPage({super.key});
@@ -11,6 +14,9 @@ class LoginViewPage extends StatefulWidget {
 
 class _LoginViewPageState extends State<LoginViewPage> {
   final navController = ScreenNavController();
+  late InputFormBuilder idFormBuilder;
+  late InputFormBuilder passFormBuilder;
+  final formValidator = FormValidator();
 
   @override
   Widget build(BuildContext context) {
@@ -57,44 +63,25 @@ class _LoginViewPageState extends State<LoginViewPage> {
                         DefaultText(text: 'LOGIN FUNCIONÁRIOS', fontSize: 20),
                   ),
                   // ID FORM
-                  Container(
-                    width: 300,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'ID',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              contentPadding: const EdgeInsets.all(16.0),
-                            ),
-                          ),
-                        ),
-                        // PASSWORD FORM
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'SENHA',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              contentPadding: const EdgeInsets.all(16.0),
-                            ),
-                            obscureText: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  idFormBuilder = InputFormBuilder(
+                      hintText: 'ID',
+                      validatorCallback: (value) =>
+                          formValidator.userValidator(value)),
+                  // PASS FORM
+                  passFormBuilder = InputFormBuilder(
+                      hintText: 'SENHA',
+                      validatorCallback: (value) =>
+                          formValidator.passValidator(value)),
+                  // Spacing
                   const SizedBox(height: 15),
                   // Login Button
                   ElevatedButton(
                     onPressed: () {
-                      // Implement your login logic here
+                      // Validate the inputForm before goes to another screen
+                      if (idFormBuilder.form.currentState!.validate() &&
+                          passFormBuilder.form.currentState!.validate()) {
+                        //navController.navigateToScreen(const MenuViewPage());
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

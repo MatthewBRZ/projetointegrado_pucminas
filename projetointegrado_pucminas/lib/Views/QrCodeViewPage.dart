@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:projetointegrado_pucminas/Controllers/QrCodeController.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
-import 'package:projetointegrado_pucminas/Controllers/TablesController.dart';
+import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
 import 'package:projetointegrado_pucminas/Utils/DefaultText.dart';
 import 'package:projetointegrado_pucminas/Views/IdentificationViewPage.dart';
 
@@ -16,11 +16,12 @@ class QrCodeViewPage extends StatefulWidget {
 class _QrCodeViewPageState extends State<QrCodeViewPage> {
   final navController = ScreenNavController();
   final qrCodeController = QrCodeController();
-  final TablesController tableController = TablesController();
+  final TableController tableController = TableController();
   String qrCodeResult = '';
 
   @override
   void initState() {
+    qrCodeController.initController();
     super.initState();
   }
 
@@ -72,6 +73,7 @@ class _QrCodeViewPageState extends State<QrCodeViewPage> {
                           ))),
                   DefaultText(text: 'ESCANEIE O QR CODE', fontSize: 20),
                   const SizedBox(height: 10),
+                  // Sized box to scan QR CODE
                   SizedBox(
                     width: 250, // Adjust the width as needed.
                     height: 250, // Adjust the height as needed.
@@ -83,8 +85,9 @@ class _QrCodeViewPageState extends State<QrCodeViewPage> {
                             .barcodes[qrcode.barcodes.length - 1].rawValue
                             .toString())) {
                           navController.goBack();
-                          navController
-                              .navigateToScreen(const IdentificationViewPage());
+                          navController.navigateToScreen(IdentificationViewPage(
+                            qrCodeInfo: tableController,
+                          ));
                         } else {
                           setState(() {
                             qrCodeResult = 'CÓDIGO INVÁLIDO';
