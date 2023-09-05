@@ -4,31 +4,19 @@ import 'package:projetointegrado_pucminas/Controllers/QrCodeController.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Controllers/TablesController.dart';
 import 'package:projetointegrado_pucminas/Utils/DefaultText.dart';
-import 'package:projetointegrado_pucminas/Views/IdentificationViewPage.dart';
 
-class QrCodeViewPage extends StatefulWidget {
-  const QrCodeViewPage({super.key});
+class IdentificationViewPage extends StatefulWidget {
+  const IdentificationViewPage({super.key});
 
   @override
-  State<QrCodeViewPage> createState() => _QrCodeViewPageState();
+  State<IdentificationViewPage> createState() => _IdentificationViewPageState();
 }
 
-class _QrCodeViewPageState extends State<QrCodeViewPage> {
+class _IdentificationViewPageState extends State<IdentificationViewPage> {
   final navController = ScreenNavController();
   final qrCodeController = QrCodeController();
   final TablesController tableController = TablesController();
   String qrCodeResult = '';
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    qrCodeController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,36 +58,7 @@ class _QrCodeViewPageState extends State<QrCodeViewPage> {
                               fit: BoxFit.contain,
                             ),
                           ))),
-                  DefaultText(text: 'ESCANEIE O QR CODE', fontSize: 20),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: 250, // Adjust the width as needed.
-                    height: 250, // Adjust the height as needed.
-                    child: MobileScanner(
-                      controller: qrCodeController.controller,
-                      onDetect: (qrcode) {
-                        // Get the last readable qr code and assess it
-                        if (tableController.checkTable(qrcode
-                            .barcodes[qrcode.barcodes.length - 1].rawValue
-                            .toString())) {
-                          navController.goBack();
-                          navController
-                              .navigateToScreen(const IdentificationViewPage());
-                        } else {
-                          setState(() {
-                            qrCodeResult = 'CÓDIGO INVÁLIDO';
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                  Text(
-                    qrCodeResult,
-                    style: const TextStyle(
-                        fontFamily: 'baskervville',
-                        fontSize: 20,
-                        color: Colors.red),
-                  ),
+                  DefaultText(text: 'QUAL O SEU NOME?', fontSize: 20),
                 ],
               ),
             ),
