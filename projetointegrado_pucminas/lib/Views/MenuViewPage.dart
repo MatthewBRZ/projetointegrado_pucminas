@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
+import 'package:projetointegrado_pucminas/Models/CartItem.dart';
 import 'package:projetointegrado_pucminas/Views/CartViewPage.dart';
-
+import '../Models/Cart.dart';
+import '../Models/Product.dart';
 import '../Utils/DefaultText.dart';
+import '../Utils/ProductCatalog.dart';
 
 class MenuViewPage extends StatefulWidget {
   const MenuViewPage({super.key});
@@ -15,22 +20,14 @@ class MenuViewPage extends StatefulWidget {
 class _MenuViewPageState extends State<MenuViewPage> {
   final navController = ScreenNavController();
   final inputController = InputControllers();
-  List<String> items = [];
+  final List<Product> products = productCatalog;
+  final Cart clientCart = Get.find<Cart>();
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
-
-    // Simulate loading data
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        items = [
-          "Item 1",
-          "Item 2",
-          "Item 3",
-        ];
-      });
-    });
   }
 
   @override
@@ -83,33 +80,36 @@ class _MenuViewPageState extends State<MenuViewPage> {
                   color: Color(0xFFC68958),
                   thickness: 10,
                 ),
-                Center(
-                  child: items.isEmpty
-                      ? const CircularProgressIndicator() // Placeholder for loading state
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: items.length,
-                                itemBuilder: (context, index) {
-                                  return Card(
-                                    child: ListTile(
-                                      onTap: () {
-                                        navController.navigateToScreen(
-                                            const CartViewPage());
-                                      },
-                                      leading:
-                                          const Icon(Icons.restaurant_menu),
-                                      title: Text(items[index]),
-                                    ),
+                products.isEmpty
+                    ? const CircularProgressIndicator() // Placeholder for loading state
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: products.length,
+                          itemBuilder: (context, index) {
+                            final product = products[index];
+                            return Card(
+                              color: const Color(0xFFC68958),
+                              child: InkWell(
+                                onTap: () {
+                                  clientCart.addItem(
+                                      CartItem(item: product, quantity: 1));
+
+                                  navController.navigateToScreen(
+                                    CartViewPage(),
                                   );
                                 },
+                                child: ListTile(
+                                  title: Text(product.name),
+                                  subtitle: Text(product.description),
+                                  trailing: Text(NumberFormat.currency(
+                                          locale: 'pt-BR', symbol: 'R\$')
+                                      .format(product.price)),
+                                ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                )
+                      )
               ],
             ),
           ),

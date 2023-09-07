@@ -5,6 +5,8 @@ import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
 import 'package:projetointegrado_pucminas/FirebaseData/firebase_options.dart';
+import 'package:projetointegrado_pucminas/Models/Cart.dart';
+import 'package:projetointegrado_pucminas/Models/Client.dart';
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 
 void main() async {
@@ -14,6 +16,8 @@ void main() async {
   );
 
   // Setting GetX states globally
+  Get.put(Client(name: '', tableNumber: 0, tableType: ''));
+  Get.put(Cart(items: []));
   Get.put(InputControllers());
   Get.put(TableController());
 

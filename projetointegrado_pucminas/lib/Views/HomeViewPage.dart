@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Utils/BakeryInfoWidget.dart';
 import 'package:projetointegrado_pucminas/Views/LoginViewPage.dart';
+import 'package:projetointegrado_pucminas/Views/MenuViewPage.dart';
 import 'package:projetointegrado_pucminas/Views/QrCodeViewPage.dart';
+
+import 'CartViewPage.dart';
 
 class HomeViewPage extends StatefulWidget {
   const HomeViewPage({super.key});
@@ -46,8 +49,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                   ),
                   InkWell(
                       onTap: () {
-                        print('cliquei');
-                        navController.navigateToScreen(LoginViewPage());
+                        navController.navigateToScreen(const LoginViewPage());
                       },
                       child: SizedBox(
                           width: 100, // Adjust the width and height as needed.
@@ -92,7 +94,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                   InkWell(
                       onTap: () {
                         navController.navigateToScreen(const QrCodeViewPage());
-                        //navController.navigateToScreen(const CartViewPage());
+                        //navController.navigateToScreen(const MenuViewPage());
                       },
                       child: SizedBox(
                           width: 100,

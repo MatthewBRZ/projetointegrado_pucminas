@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
-import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
+import 'package:projetointegrado_pucminas/Models/Client.dart';
 import 'package:projetointegrado_pucminas/Utils/DefaultText.dart';
 import 'package:projetointegrado_pucminas/Utils/FormValidator.dart';
 import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
@@ -18,7 +18,7 @@ class IdentificationViewPage extends StatefulWidget {
 class _IdentificationViewPageState extends State<IdentificationViewPage> {
   final navController = ScreenNavController();
   final clientInput = Get.find<InputControllers>().clientIdController;
-  final qrCodeGet = Get.find<TableController>();
+  final Client client = Get.find<Client>();
   late InputFormBuilder inputFormBuilder;
   final formValidator = FormValidator();
 
@@ -62,7 +62,7 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
             Align(
               alignment: Alignment.topRight,
               child: DefaultText(
-                text: '${qrCodeGet.tableType}-${qrCodeGet.tableNumber}',
+                text: '${client.tableType}-${client.tableNumber}',
                 fontSize: 20,
               ),
             ),
@@ -88,6 +88,7 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
                     onPressed: () {
                       // Validate the inputForm before goes to another screen
                       if (inputFormBuilder.form.currentState!.validate()) {
+                        client.setName = clientInput.text;
                         //navController.navigateToScreen(const MenuViewPage());
                         navController.navigateToScreen(const MenuViewPage());
                       }
