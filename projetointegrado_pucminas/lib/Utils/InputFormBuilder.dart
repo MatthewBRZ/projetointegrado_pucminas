@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class InputFormBuilder extends StatelessWidget {
   final GlobalKey<FormState> form = GlobalKey<FormState>();
   final String? Function(String?)? validatorCallback;
-  final hintText;
+  final TextEditingController controller;
+  final String hintText;
 
   InputFormBuilder({
     required this.hintText,
     required this.validatorCallback,
+    required this.controller,
   });
 
   @override
@@ -19,6 +21,7 @@ class InputFormBuilder extends StatelessWidget {
         child: Form(
           key: form,
           child: TextFormField(
+            controller: controller,
             validator: validatorCallback,
             decoration: InputDecoration(
               hintText: hintText,

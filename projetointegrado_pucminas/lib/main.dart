@@ -1,16 +1,23 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
+import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
 import 'package:projetointegrado_pucminas/FirebaseData/firebase_options.dart';
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 
 void main() async {
-  runApp(MyApp());
-
   // Set up firebase data
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.web,
   );
+
+  // Setting GetX states globally
+  Get.put(InputControllers());
+  Get.put(TableController());
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

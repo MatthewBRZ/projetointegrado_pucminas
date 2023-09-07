@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
@@ -8,9 +9,7 @@ import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
 import 'package:projetointegrado_pucminas/Views/MenuViewPage.dart';
 
 class IdentificationViewPage extends StatefulWidget {
-  const IdentificationViewPage({super.key, required this.qrCodeInfo});
-
-  final TableController qrCodeInfo;
+  const IdentificationViewPage({super.key});
 
   @override
   State<IdentificationViewPage> createState() => _IdentificationViewPageState();
@@ -18,7 +17,8 @@ class IdentificationViewPage extends StatefulWidget {
 
 class _IdentificationViewPageState extends State<IdentificationViewPage> {
   final navController = ScreenNavController();
-  final inputController = InputControllers();
+  final clientInput = Get.find<InputControllers>().clientIdController;
+  final qrCodeGet = Get.find<TableController>();
   late InputFormBuilder inputFormBuilder;
   final formValidator = FormValidator();
 
@@ -27,6 +27,7 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
     super.initState();
     // Initializing Forms
     inputFormBuilder = InputFormBuilder(
+      controller: clientInput,
       hintText: 'Digite o seu nome',
       validatorCallback: (value) => formValidator.clientValidator(value),
     );
@@ -61,8 +62,7 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
             Align(
               alignment: Alignment.topRight,
               child: DefaultText(
-                text:
-                    '${widget.qrCodeInfo.tableType}-${widget.qrCodeInfo.tableNumber}',
+                text: '${qrCodeGet.tableType}-${qrCodeGet.tableNumber}',
                 fontSize: 20,
               ),
             ),
@@ -88,6 +88,7 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
                     onPressed: () {
                       // Validate the inputForm before goes to another screen
                       if (inputFormBuilder.form.currentState!.validate()) {
+                        //navController.navigateToScreen(const MenuViewPage());
                         navController.navigateToScreen(const MenuViewPage());
                       }
                     },

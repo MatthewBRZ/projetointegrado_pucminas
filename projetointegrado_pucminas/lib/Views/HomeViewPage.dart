@@ -90,9 +90,9 @@ class _HomeViewPageState extends State<HomeViewPage> {
                   const SizedBox(height: 15),
 
                   InkWell(
-                      //TO DO ***********************************
                       onTap: () {
-                        navController.navigateToScreen(QrCodeViewPage());
+                        navController.navigateToScreen(const QrCodeViewPage());
+                        //navController.navigateToScreen(const CartViewPage());
                       },
                       child: SizedBox(
                           width: 100,

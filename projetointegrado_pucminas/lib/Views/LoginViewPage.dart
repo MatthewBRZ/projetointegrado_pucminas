@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
+import 'package:projetointegrado_pucminas/Views/OptionsViewPage.dart';
 import '../Utils/DefaultText.dart';
 import '../Utils/FormValidator.dart';
 
@@ -13,6 +15,8 @@ class LoginViewPage extends StatefulWidget {
 
 class _LoginViewPageState extends State<LoginViewPage> {
   final navController = ScreenNavController();
+  final userInput = InputControllers().userNameController;
+  final passInput = InputControllers().passwordController;
   late InputFormBuilder idFormBuilder;
   late InputFormBuilder passFormBuilder;
   final formValidator = FormValidator();
@@ -22,10 +26,12 @@ class _LoginViewPageState extends State<LoginViewPage> {
     super.initState();
     //Initializing Forms
     idFormBuilder = InputFormBuilder(
+        controller: userInput,
         hintText: 'ID',
         validatorCallback: (value) => formValidator.userValidator(value));
     // PASS FORM
     passFormBuilder = InputFormBuilder(
+        controller: passInput,
         hintText: 'SENHA',
         validatorCallback: (value) => formValidator.passValidator(value));
   }
@@ -86,13 +92,12 @@ class _LoginViewPageState extends State<LoginViewPage> {
                       // Validate the inputForm before goes to another screen
                       if (idFormBuilder.form.currentState!.validate() &&
                           passFormBuilder.form.currentState!.validate()) {
-                        //navController.navigateToScreen(const MenuViewPage());
+                        navController.navigateToScreen(const OptionsViewPage());
                       }
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            20.0), // Adjust the radius as needed
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                     child: Padding(

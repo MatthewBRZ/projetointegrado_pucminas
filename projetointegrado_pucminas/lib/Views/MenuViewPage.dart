@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
+import 'package:projetointegrado_pucminas/Views/CartViewPage.dart';
+
+import '../Utils/DefaultText.dart';
 
 class MenuViewPage extends StatefulWidget {
   const MenuViewPage({super.key});
@@ -60,19 +63,19 @@ class _MenuViewPageState extends State<MenuViewPage> {
                 Center(
                   child: Column(
                     children: [
-                      InkWell(
-                        child: SizedBox(
-                          width: 250, // Adjust the width and height as needed.
-                          height: 250,
-                          child: Hero(
-                            tag: 'bakeryLogo',
-                            child: Image.asset(
-                              'assets/images/bakery_logo.png', // Replace with your asset path.
-                              fit: BoxFit.contain,
-                            ),
+                      SizedBox(
+                        width: 250, // Adjust the width and height as needed.
+                        height: 250,
+                        child: Hero(
+                          tag: 'bakeryLogo',
+                          child: Image.asset(
+                            'assets/images/bakery_logo.png', // Replace with your asset path.
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
+                      DefaultText(text: 'CARDÁPIO DIGITAL', fontSize: 20),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -92,6 +95,10 @@ class _MenuViewPageState extends State<MenuViewPage> {
                                 itemBuilder: (context, index) {
                                   return Card(
                                     child: ListTile(
+                                      onTap: () {
+                                        navController.navigateToScreen(
+                                            const CartViewPage());
+                                      },
                                       leading:
                                           const Icon(Icons.restaurant_menu),
                                       title: Text(items[index]),

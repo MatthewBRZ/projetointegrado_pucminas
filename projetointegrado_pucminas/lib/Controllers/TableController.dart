@@ -1,7 +1,8 @@
+import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:projetointegrado_pucminas/Models/Tables.dart';
 
-class TableController {
+class TableController extends GetxController {
   final controller = MobileScannerController();
   String tableNumber;
   String tableType;

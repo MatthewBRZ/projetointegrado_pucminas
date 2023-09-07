@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:projetointegrado_pucminas/Controllers/QrCodeController.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
@@ -16,7 +17,7 @@ class QrCodeViewPage extends StatefulWidget {
 class _QrCodeViewPageState extends State<QrCodeViewPage> {
   final navController = ScreenNavController();
   final qrCodeController = QrCodeController();
-  final TableController tableController = TableController();
+  final TableController tableController = Get.find<TableController>();
   String qrCodeResult = '';
 
   @override
@@ -85,9 +86,8 @@ class _QrCodeViewPageState extends State<QrCodeViewPage> {
                             .barcodes[qrcode.barcodes.length - 1].rawValue
                             .toString())) {
                           navController.goBack();
-                          navController.navigateToScreen(IdentificationViewPage(
-                            qrCodeInfo: tableController,
-                          ));
+                          navController
+                              .navigateToScreen(const IdentificationViewPage());
                         } else {
                           setState(() {
                             qrCodeResult = 'CÓDIGO INVÁLIDO';
