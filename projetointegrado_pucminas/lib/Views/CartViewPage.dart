@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
+import 'package:projetointegrado_pucminas/Models/Product.dart';
 import 'package:projetointegrado_pucminas/Utils/CartinfoHeader.dart';
+import 'package:projetointegrado_pucminas/Utils/ProductCatalog.dart';
 import '../Controllers/ScreenNavController.dart';
+import '../Models/Cart.dart';
+import '../Models/Client.dart';
+import '../Utils/CartBottomBar.dart';
 import '../Utils/DefaultText.dart';
 
 class CartViewPage extends StatefulWidget {
@@ -14,93 +19,154 @@ class CartViewPage extends StatefulWidget {
 
 class _CartViewPageState extends State<CartViewPage> {
   final navController = ScreenNavController();
-  final clientInput = Get.find<InputControllers>().clientIdController;
+  final List<Product> products = productCatalog;
+  final Cart cart = Get.find<Cart>();
+  final Client client = Get.find<Client>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              InkWell(
-                  onTap: () {
-                    navController.goBack();
-                  },
-                  child: SizedBox(
-                      width: 50, // Adjust the width and height as needed.
-                      height: 50,
-                      child: Image.asset(
-                        'assets/images/backicon.png', // Replace with your asset path.
-                        fit: BoxFit.contain,
-                      ))) // Adjust the fit as needed.
-              ,
-              Center(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 250, // Adjust the width and height as needed.
-                      height: 250,
-                      child: Hero(
-                        tag: 'bakeryLogo',
-                        child: Image.asset(
-                          'assets/images/bakery_logo.png', // Replace with your asset path.
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Image.asset(
-                            width: 100,
-                            height: 100,
-                            'assets/images/cartIcon.png'),
-                        const Spacer(),
-                        //DefaultText(text: '', fontSize: 20),s
-                        Column(
-                          children: [
-                            DefaultText(text: 'CARRINHO', fontSize: 20),
-                            DefaultText(text: '-', fontSize: 20),
-                            DefaultText(text: clientInput.text, fontSize: 20),
-                          ],
-                        ),
-                        const Spacer(),
-                        Image.asset(
-                            width: 100,
-                            height: 100,
-                            'assets/images/cartIcon.png'),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    const Divider(
-                      color: Color(0xFFC68958),
-                      thickness: 10,
-                    ),
-                    // Custom Widget to display info
-                    CartInfoHeader(),
-                    const Divider(
-                      color: Color(0xFFC68958),
-                      thickness: 10,
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(children: [
-                        DefaultText(text: 'ListScroll', fontSize: 16),
-                      ]),
-                    ),
-                    Container(
-                      child: DefaultText(text: 'Bottom Menu', fontSize: 16),
-                    ),
-                  ],
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: InkWell(
+                onTap: () {
+                  navController.goBack();
+                },
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image.asset(
+                    'assets/images/backicon.png',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: Hero(
+                      tag: 'bakeryLogo',
+                      child: Image.asset(
+                        'assets/images/bakery_logo.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Image.asset(
+                        width: 100,
+                        height: 100,
+                        'assets/images/cartIcon.png',
+                      ),
+                      const Spacer(),
+                      Column(
+                        children: [
+                          DefaultText(text: 'CARRINHO', fontSize: 20),
+                          DefaultText(text: '-', fontSize: 20),
+                          DefaultText(text: client.name, fontSize: 20),
+                        ],
+                      ),
+                      const Spacer(),
+                      Image.asset(
+                        width: 100,
+                        height: 100,
+                        'assets/images/cartIcon.png',
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    color: Color(0xFFC68958),
+                    thickness: 10,
+                  ),
+                  CartInfoHeader(),
+                  const Divider(
+                    color: Color(0xFFC68958),
+                    thickness: 10,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: cart.items.length,
+                itemBuilder: (context, index) {
+                  final product = cart.items[index];
+                  return Card(
+                    color: const Color(0xFFC68958),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(product.item.name),
+                          subtitle: Text(product.item.description),
+                          trailing: Text(NumberFormat.currency(
+                            locale: 'pt-BR',
+                            symbol: 'R\$',
+                          ).format(product.item.price * product.quantity)),
+                        ),
+                        // Add a second row here
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  cart.modifyItem(
+                                      index, cart.items[index].quantity - 1);
+                                });
+                              },
+                              child: const Icon(
+                                Icons.remove,
+                                size: 32,
+                              ),
+                            ),
+                            Container(
+                              width: 32,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color:
+                                      Colors.black, // Specify the border color
+                                  width: 1.0, // Specify the border width
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Adjust the radius as needed
+                              ),
+                              child: Center(
+                                child: DefaultText(
+                                  text: product.quantity.toString(),
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    cart.modifyItem(
+                                        index, cart.items[index].quantity + 1);
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  size: 32,
+                                )),
+                          ],
+                          // Add other widgets for the second row as needed
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            CartBottomBar(),
+          ],
         ),
       ),
     );
