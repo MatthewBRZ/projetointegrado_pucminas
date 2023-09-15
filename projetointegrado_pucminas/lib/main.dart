@@ -5,8 +5,10 @@ import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
 import 'package:projetointegrado_pucminas/FirebaseData/firebase_options.dart';
+import 'package:projetointegrado_pucminas/Models/Attendant.dart';
 import 'package:projetointegrado_pucminas/Models/Cart.dart';
 import 'package:projetointegrado_pucminas/Models/Client.dart';
+import 'package:projetointegrado_pucminas/Controllers/CartInfoHeaderController.dart';
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 
 void main() async {
@@ -20,12 +22,15 @@ void main() async {
   Get.put(Cart(items: []));
   Get.put(InputControllers());
   Get.put(TableController());
+  Get.put(CartInfoHeaderController());
+  Get.put(Attendant(id: 0, name: 'A ser definido'));
 
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
+  // Initializing nav controller
   final navigationController = ScreenNavController();
 
   // This widget is the root of your application.

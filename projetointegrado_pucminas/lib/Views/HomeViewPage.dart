@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Utils/BakeryInfoWidget.dart';
 import 'package:projetointegrado_pucminas/Views/LoginViewPage.dart';
-import 'package:projetointegrado_pucminas/Views/MenuViewPage.dart';
 import 'package:projetointegrado_pucminas/Views/QrCodeViewPage.dart';
-
-import 'CartViewPage.dart';
 
 class HomeViewPage extends StatefulWidget {
   const HomeViewPage({super.key});

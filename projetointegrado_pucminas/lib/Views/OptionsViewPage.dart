@@ -3,6 +3,7 @@ import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 import 'package:projetointegrado_pucminas/Views/OpenOrdersViewPage.dart';
 
 import '../Controllers/ScreenNavController.dart';
+import '../Models/Auth.dart';
 import '../Utils/DefaultText.dart';
 
 class OptionsViewPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class OptionsViewPage extends StatefulWidget {
 
 class _OptionsViewPageState extends State<OptionsViewPage> {
   final navController = ScreenNavController();
+  final auth = Auth();
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +131,7 @@ class _OptionsViewPageState extends State<OptionsViewPage> {
                             navController.goBack();
                             navController
                                 .navigateToScreen(const HomeViewPage());
+                            auth.signOut();
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(300, 50),

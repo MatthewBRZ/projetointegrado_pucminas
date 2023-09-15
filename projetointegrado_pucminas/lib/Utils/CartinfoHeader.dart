@@ -1,31 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Models/Client.dart';
+import '../Controllers/CartInfoHeaderController.dart';
 import 'DefaultText.dart';
 
 class CartInfoHeader extends StatelessWidget {
-  CartInfoHeader({super.key});
-
-  final Client client = Get.find<Client>();
+  final CartInfoHeaderController cartInfoController =
+      Get.find<CartInfoHeaderController>();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         DefaultText(
-            text: '${client.tableType}-${client.tableNumber}', fontSize: 20),
+          text:
+              '${Get.find<Client>().tableType}-${Get.find<Client>().tableNumber}',
+          fontSize: 14,
+        ),
         Row(
           children: [
-            DefaultText(text: 'Comanda digital', fontSize: 20),
+            DefaultText(
+                text: 'Comanda Dig.: ${cartInfoController.digCommand}',
+                fontSize: 16),
             const Spacer(),
-            DefaultText(text: 'Status do pedido', fontSize: 20),
+            DefaultText(
+                text: 'Status: ${cartInfoController.orderStatus}',
+                fontSize: 16),
           ],
         ),
         Row(
           children: [
-            DefaultText(text: 'Comanda Fisica', fontSize: 20),
+            DefaultText(
+                text: 'Comanda Local: ${cartInfoController.localCommand}',
+                fontSize: 16),
             const Spacer(),
-            DefaultText(text: 'Nome do atendente', fontSize: 20),
+            DefaultText(
+                text: 'Atendente: ${cartInfoController.attendantName}',
+                fontSize: 16),
           ],
         ),
       ],

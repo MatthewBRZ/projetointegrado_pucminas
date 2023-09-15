@@ -3,6 +3,7 @@ import 'package:projetointegrado_pucminas/Controllers/InputControllers.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
 import 'package:projetointegrado_pucminas/Views/OptionsViewPage.dart';
+import '../Models/Auth.dart';
 import '../Utils/DefaultText.dart';
 import '../Utils/FormValidator.dart';
 
@@ -20,6 +21,7 @@ class _LoginViewPageState extends State<LoginViewPage> {
   late InputFormBuilder idFormBuilder;
   late InputFormBuilder passFormBuilder;
   final formValidator = FormValidator();
+  final auth = Auth();
 
   @override
   void initState() {
@@ -88,11 +90,26 @@ class _LoginViewPageState extends State<LoginViewPage> {
                   const SizedBox(height: 15),
                   // Login Button
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Validate the inputForm before goes to another screen
                       if (idFormBuilder.form.currentState!.validate() &&
                           passFormBuilder.form.currentState!.validate()) {
-                        navController.navigateToScreen(const OptionsViewPage());
+                        // Check for valid authentiation and go to another screen
+                        if (await auth.authenticate(
+                            idFormBuilder.controller.text,
+                            passFormBuilder.controller.text)) {
+                          navController
+                              .navigateToScreen(const OptionsViewPage());
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            backgroundColor: Color(0xFFC68958),
+                            content: Text(
+                              'Usuário e/ou senha incorretos.',
+                            ),
+                            duration: Duration(seconds: 3),
+                          ));
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projetointegrado_pucminas/Models/Attendant.dart';
+import 'package:projetointegrado_pucminas/Models/Client.dart';
+import 'package:projetointegrado_pucminas/Models/Order.dart';
 import '../Models/Cart.dart';
 import 'DefaultText.dart';
 
 class CartBottomBar extends StatelessWidget {
   final Cart cart = Get.find<Cart>();
-  Cart cartPlaced = Cart(items: []);
+  final Client client = Get.find<Client>();
+  final Attendant attendant = Get.find<Attendant>();
+  late Order newOrder;
+  late Order closeOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +37,21 @@ class CartBottomBar extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    cartPlaced = cart;
+                  onPressed: () async {
+                    newOrder = Order(
+                        client: client,
+                        attendant: attendant,
+                        cart: cart,
+                        date: DateTime.now());
+                    if (await newOrder.createOrder()) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        backgroundColor: Color(0xFFC68958),
+                        content: Text(
+                          'Pedido registrado com sucesso.',
+                        ),
+                        duration: Duration(seconds: 3),
+                      ));
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(250, 50),
@@ -60,7 +79,14 @@ class CartBottomBar extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    closeOrder = Order(
+                        client: client,
+                        attendant: attendant,
+                        cart: cart,
+                        date: DateTime.now());
+                    closeOrder.closeOrder();
+                  },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(250, 50),
                     shape: RoundedRectangleBorder(

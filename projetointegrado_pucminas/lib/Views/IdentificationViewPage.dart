@@ -89,7 +89,6 @@ class _IdentificationViewPageState extends State<IdentificationViewPage> {
                       // Validate the inputForm before goes to another screen
                       if (inputFormBuilder.form.currentState!.validate()) {
                         client.setName = clientInput.text;
-                        //navController.navigateToScreen(const MenuViewPage());
                         navController.navigateToScreen(const MenuViewPage());
                       }
                     },

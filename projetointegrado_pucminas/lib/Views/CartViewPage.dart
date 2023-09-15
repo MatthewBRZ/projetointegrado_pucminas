@@ -10,8 +10,11 @@ import '../Models/Client.dart';
 import '../Utils/CartBottomBar.dart';
 import '../Utils/DefaultText.dart';
 
+final GlobalKey<_CartViewPageState> cartViewPageKey =
+    GlobalKey<_CartViewPageState>();
+
 class CartViewPage extends StatefulWidget {
-  const CartViewPage({super.key});
+  CartViewPage() : super(key: cartViewPageKey);
 
   @override
   State<CartViewPage> createState() => _CartViewPageState();
@@ -22,6 +25,11 @@ class _CartViewPageState extends State<CartViewPage> {
   final List<Product> products = productCatalog;
   final Cart cart = Get.find<Cart>();
   final Client client = Get.find<Client>();
+
+  // Define a callback function to update the header
+  void updateInfo() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +57,8 @@ class _CartViewPageState extends State<CartViewPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    width: 150,
-                    height: 150,
+                    width: 100,
+                    height: 100,
                     child: Hero(
                       tag: 'bakeryLogo',
                       child: Image.asset(
@@ -62,22 +70,22 @@ class _CartViewPageState extends State<CartViewPage> {
                   Row(
                     children: [
                       Image.asset(
-                        width: 100,
-                        height: 100,
+                        width: 50,
+                        height: 50,
                         'assets/images/cartIcon.png',
                       ),
                       const Spacer(),
                       Column(
                         children: [
-                          DefaultText(text: 'CARRINHO', fontSize: 20),
-                          DefaultText(text: '-', fontSize: 20),
-                          DefaultText(text: client.name, fontSize: 20),
+                          DefaultText(text: 'CARRINHO', fontSize: 16),
+                          DefaultText(text: '-', fontSize: 16),
+                          DefaultText(text: client.name, fontSize: 16),
                         ],
                       ),
                       const Spacer(),
                       Image.asset(
-                        width: 100,
-                        height: 100,
+                        width: 50,
+                        height: 50,
                         'assets/images/cartIcon.png',
                       ),
                     ],
