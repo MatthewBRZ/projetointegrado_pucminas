@@ -12,7 +12,8 @@ import 'package:projetointegrado_pucminas/Controllers/CartInfoHeaderController.d
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 
 void main() async {
-  // Set up firebase data
+  // Set up firebase
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.web,
   );

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "792333304002",
+    "project_id": "pucminas-engsoftware-22",
+    "storage_bucket": "pucminas-engsoftware-22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792333304002:android:181ebe8839e6f2c3b83b5b",
+        "android_client_info": {
+          "package_name": "com.example.projetointegrado_pucminas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "792333304002-njqsm616ejbn9dkpd667hdc809at66d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBKsvVt2r_0KrtFdv0lzOflEch6WIfUUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "792333304002-njqsm616ejbn9dkpd667hdc809at66d1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
