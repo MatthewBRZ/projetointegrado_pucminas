@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetointegrado_pucminas/Controllers/CartInfoHeaderController.dart';
 import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
-import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 import '../Views/CartViewPage.dart';
-import '../Views/MenuViewPage.dart';
 import 'Client.dart';
 import 'Attendant.dart';
 import 'Cart.dart';
@@ -133,10 +130,6 @@ class Order {
         // Update the latest order number in Firestore
         final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
         await latestOrderIdDoc.set({'latestOrderId': lastOrderId});
-
-        Future.delayed(Duration(seconds: 4), () {
-          navController.navigateToScreen(const HomeViewPage());
-        });
 
         return true;
       } else {

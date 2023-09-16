@@ -24,4 +24,11 @@ class ScreenNavController {
   void goBack() {
     navigatorKey.currentState!.pop();
   }
+
+  void removeAllAndPush(Widget screen) {
+    navigatorKey.currentState!.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => screen),
+      (Route<dynamic> route) => false,
+    );
+  }
 }

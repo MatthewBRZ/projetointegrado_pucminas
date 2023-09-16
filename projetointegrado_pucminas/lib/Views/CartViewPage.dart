@@ -9,6 +9,7 @@ import '../Models/Cart.dart';
 import '../Models/Client.dart';
 import '../Utils/CartBottomBar.dart';
 import '../Utils/DefaultText.dart';
+import 'HomeViewPage.dart';
 
 final GlobalKey<_CartViewPageState> cartViewPageKey =
     GlobalKey<_CartViewPageState>();
@@ -29,6 +30,30 @@ class _CartViewPageState extends State<CartViewPage> {
   // Define a callback function to update the header
   void updateInfo() {
     setState(() {});
+  }
+
+  void closeOrderMessage() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Pagamento'),
+          content: const Text(
+              'Dirija-se ao caixa para pagamento. Obrigado pela preferência!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                navController.goBack();
+                navController.removeAllAndPush(const HomeViewPage());
+              },
+              child: const Text('Pagina Principal'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

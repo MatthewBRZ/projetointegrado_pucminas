@@ -6,7 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:projetointegrado_pucminas/Models/Attendant.dart';
 import 'package:projetointegrado_pucminas/Models/Client.dart';
 import 'package:projetointegrado_pucminas/Models/Order.dart';
+import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 import '../Models/Cart.dart';
+import '../Views/CartViewPage.dart';
 import 'DefaultText.dart';
 
 // Unique digCommand identifier
@@ -110,13 +112,7 @@ class CartBottomBar extends StatelessWidget {
                         duration: Duration(seconds: 3),
                       ));
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: Color(0xFFC68958),
-                        content: Text(
-                          'Dirija-se ao caixa para pagamento. Obrigado pela preferência!',
-                        ),
-                        duration: Duration(seconds: 5),
-                      ));
+                      cartViewPageKey.currentState!.closeOrderMessage();
                     }
                   },
                   style: ElevatedButton.styleFrom(
