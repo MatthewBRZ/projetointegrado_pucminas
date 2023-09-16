@@ -156,8 +156,9 @@ class _CartViewPageState extends State<CartViewPage> {
                             InkWell(
                                 onTap: () {
                                   setState(() {
-                                    cart.modifyItem(
-                                        index, cart.items[index].quantity + 1);
+                                    cart.addItem(cart.items[index]);
+                                    // cart.modifyItem(
+                                    //     index, cart.items[index].quantity + 1);
                                   });
                                 },
                                 child: const Icon(

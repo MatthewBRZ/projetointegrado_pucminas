@@ -9,6 +9,7 @@ import 'package:projetointegrado_pucminas/Models/Attendant.dart';
 import 'package:projetointegrado_pucminas/Models/Cart.dart';
 import 'package:projetointegrado_pucminas/Models/Client.dart';
 import 'package:projetointegrado_pucminas/Controllers/CartInfoHeaderController.dart';
+import 'package:projetointegrado_pucminas/Utils/CartBottomBar.dart';
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 
 void main() async {

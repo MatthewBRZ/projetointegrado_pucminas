@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'CartItem.dart';
 
 class Cart extends GetxController {
@@ -18,7 +17,9 @@ class Cart extends GetxController {
     if (existingIndex != -1) {
       // If the item is already in the cart, update its quantity
       modifyItem(
-          existingIndex, newItem.quantity + items[existingIndex].quantity);
+          //existingIndex, newItem.quantity + items[existingIndex].quantity);
+          existingIndex,
+          items[existingIndex].quantity + 1);
     } else {
       // If the item is not in the cart, add it as a new item
       items.add(newItem);
@@ -51,21 +52,17 @@ class Cart extends GetxController {
     }
   }
 
-  String getTotal() {
+  double getTotal() {
     double total = 0;
 
     items.forEach((item) {
       total = total + (item.quantity * item.item.price);
     });
 
-    return NumberFormat.currency(
-      locale: 'pt-BR',
-      symbol: 'R\$',
-    ).format(total);
+    return total;
   }
 
-  // Remove an item from the cart based on its index
-  void saveCart(int index) {
-    itemsPlaced = items;
+  void saveCart() {
+    itemsPlaced.addAll(items);
   }
 }

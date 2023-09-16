@@ -1,8 +1,11 @@
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projetointegrado_pucminas/Controllers/CartInfoHeaderController.dart';
+import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
+import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 import '../Views/CartViewPage.dart';
+import '../Views/MenuViewPage.dart';
 import 'Client.dart';
 import 'Attendant.dart';
 import 'Cart.dart';
@@ -12,29 +15,30 @@ import 'Status.dart';
 final firestore = FirebaseFirestore.instance;
 // Instantiate cartInfoHeader to update data
 final cartInfoController = Get.find<CartInfoHeaderController>();
+final navController = ScreenNavController();
+int firstId = 0;
 
 class Order {
   Client client = Get.find<Client>();
   Attendant attendant = Get.find<Attendant>();
-  int orderId;
+  int lastOrderId;
   int digCommand;
   int localCommand;
   String obs = '';
   Status status;
-  final Cart cart;
-  final DateTime date;
+  Cart cart;
+  DateTime date = DateTime.now();
   double total;
 
   Order({
     required this.client,
-    this.orderId = 0,
+    this.lastOrderId = 0,
     required this.attendant,
-    this.digCommand = 0,
+    required this.digCommand,
     this.localCommand = 0,
     this.obs = '',
     this.status = Status.NA_FILA,
     required this.cart,
-    required this.date,
     this.total = 0,
   });
 
@@ -43,26 +47,21 @@ class Order {
       // Retrieve the latest order number
       final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
       final latestOrderIdSnapshot = await latestOrderIdDoc.get();
-      orderId = latestOrderIdSnapshot.exists
+      lastOrderId = latestOrderIdSnapshot.exists
           ? latestOrderIdSnapshot.get('latestOrderId')
-          : 0;
+          : 1;
 
-      // Increment the order number
-      orderId++;
-      // Update the latest order number in Firestore
-      await latestOrderIdDoc.set({'latestOrderId': orderId});
-
-      //Generate a random digital Command
-      digCommand = Random().nextInt(10000);
+      // Save Cart
+      cart.saveCart();
 
 // Create the order with the incremented order number
       final orderCollection =
           firestore.collection('bakeryTicketSystemDB/').doc('Orders');
       final newOrderDoc =
-          orderCollection.collection(orderId.toString()).doc('Cart');
+          orderCollection.collection(lastOrderId.toString()).doc('Cart');
       await newOrderDoc.set({
         'client': client.getName,
-        'orderId': orderId,
+        'orderId': lastOrderId,
         'attendant': attendant.getName,
         'digCommand': digCommand,
         'localCommand': localCommand,
@@ -77,7 +76,7 @@ class Order {
       int itemIndex = 1;
 
       // Loop through cart items and add into DB
-      for (final cartItem in cart.items) {
+      for (final cartItem in cart.itemsPlaced) {
         final cartItemCollection = cartCollection.doc(itemIndex.toString());
         await cartItemCollection.set({
           'productId': cartItem.item.id,
@@ -92,8 +91,19 @@ class Order {
       cartInfoController.setOrderStatus = status;
       cartInfoController.setAttendant = attendant.getName;
 
+      // Clear the cart for new orders
+      cart.items.clear();
+
       // Update Cart View
       cartViewPageKey.currentState!.updateInfo();
+
+      // Keep track of the first client Order Id
+      if (firstId == 0) {
+        firstId = lastOrderId;
+      }
+
+      // Keep track of the total money
+      total = total + cart.getTotal();
 
       return true;
     } catch (e) {
@@ -105,35 +115,36 @@ class Order {
 
   void deleteOrder() {}
 
-  Future<void> closeOrder() async {
+  Future<bool> closeOrder() async {
     try {
-      // Retrieve the latest order number
-      final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
-      final latestOrderIdSnapshot = await latestOrderIdDoc.get();
-      orderId = latestOrderIdSnapshot.exists
-          ? latestOrderIdSnapshot.get('latestOrderId')
-          : 0;
+      // Get a reference to the "Orders" document
+      final ordersDocRef =
+          FirebaseFirestore.instance.doc('bakeryTicketSystemDB/Orders');
 
-      // Get the document containing all orders
-      final ordersDoc = await FirebaseFirestore.instance
-          .doc('bakeryTicketSystemDB/Orders')
-          .get();
+      // Check if there is a order placed by Client
+      if (firstId != 0) {
+        cart.items.clear();
+        cart.items.addAll(cart.itemsPlaced);
+        cartViewPageKey.currentState!.updateInfo();
+        print(total);
 
-      // Check if the document exists
-      if (ordersDoc.exists) {
-        final ordersData = ordersDoc.data() as Map<String, dynamic>;
+        // Increment the order number
+        lastOrderId++;
+        // Update the latest order number in Firestore
+        final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
+        await latestOrderIdDoc.set({'latestOrderId': lastOrderId});
 
-        // Iterate through the orders
-        ordersData.forEach((orderId, orderData) async {
-          if (orderData['client'] == client.getName &&
-              orderData['status'] == Status.NA_FILA.toString()) {
-            // Calculate the total and update the status to "ENCERRADO"
-            print(orderData['total']);
-          }
+        Future.delayed(Duration(seconds: 4), () {
+          navController.navigateToScreen(const HomeViewPage());
         });
+
+        return true;
+      } else {
+        return false;
       }
     } catch (error) {
       print('Error closing orders: $error');
+      return false;
     }
   }
 
