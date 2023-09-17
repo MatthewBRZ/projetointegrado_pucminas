@@ -18,33 +18,34 @@ int firstId = 0;
 class Order {
   Client client = Get.find<Client>();
   Attendant attendant = Get.find<Attendant>();
-  int lastOrderId;
+  int orderId;
   int digCommand;
   int localCommand;
   String obs = '';
   Status status;
   Cart cart;
-  DateTime date = DateTime.now();
+  DateTime date;
   double total;
 
   Order({
     required this.client,
-    this.lastOrderId = 0,
+    this.orderId = 0,
     required this.attendant,
     required this.digCommand,
     this.localCommand = 0,
     this.obs = '',
     this.status = Status.NA_FILA,
+    DateTime? date,
     required this.cart,
     this.total = 0,
-  });
+  }) : date = date ?? DateTime.now();
 
   Future<bool> createOrder() async {
     try {
       // Retrieve the latest order number
       final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
       final latestOrderIdSnapshot = await latestOrderIdDoc.get();
-      lastOrderId = latestOrderIdSnapshot.exists
+      orderId = latestOrderIdSnapshot.exists
           ? latestOrderIdSnapshot.get('latestOrderId')
           : 1;
 
@@ -55,10 +56,10 @@ class Order {
       final orderCollection =
           firestore.collection('bakeryTicketSystemDB/').doc('Orders');
       final newOrderDoc =
-          orderCollection.collection(lastOrderId.toString()).doc('Cart');
+          orderCollection.collection(orderId.toString()).doc('Cart');
       await newOrderDoc.set({
         'client': client.getName,
-        'orderId': lastOrderId,
+        'orderId': orderId,
         'attendant': attendant.getName,
         'digCommand': digCommand,
         'localCommand': localCommand,
@@ -66,6 +67,7 @@ class Order {
         'status': status.toString(),
         'date': date,
         'total': cart.getTotal(),
+        'table': '${client.getTableType} ${client.getTableNumber}',
       });
 
       // Set itemIndex to 1
@@ -96,7 +98,7 @@ class Order {
 
       // Keep track of the first client Order Id
       if (firstId == 0) {
-        firstId = lastOrderId;
+        firstId = orderId;
       }
 
       // Keep track of the total money
@@ -110,14 +112,8 @@ class Order {
     }
   }
 
-  void deleteOrder() {}
-
   Future<bool> closeOrder() async {
     try {
-      // Get a reference to the "Orders" document
-      final ordersDocRef =
-          FirebaseFirestore.instance.doc('bakeryTicketSystemDB/Orders');
-
       // Check if there is a order placed by Client
       if (firstId != 0) {
         cart.items.clear();
@@ -126,10 +122,10 @@ class Order {
         print(total);
 
         // Increment the order number
-        lastOrderId++;
+        orderId++;
         // Update the latest order number in Firestore
         final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
-        await latestOrderIdDoc.set({'latestOrderId': lastOrderId});
+        await latestOrderIdDoc.set({'latestOrderId': orderId});
 
         return true;
       } else {
@@ -140,6 +136,8 @@ class Order {
       return false;
     }
   }
+
+  void deleteOrder() {}
 
   void editOrder() {}
 

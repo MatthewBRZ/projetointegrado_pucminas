@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:projetointegrado_pucminas/Models/OrdersManager.dart';
 import '../Controllers/ScreenNavController.dart';
 import '../Utils/DefaultText.dart';
 
 class OpenOrdersViewPage extends StatefulWidget {
-  const OpenOrdersViewPage({super.key});
+  const OpenOrdersViewPage({Key? key}) : super(key: key);
 
   @override
   State<OpenOrdersViewPage> createState() => _OpenOrdersViewPageState();
@@ -11,6 +12,25 @@ class OpenOrdersViewPage extends StatefulWidget {
 
 class _OpenOrdersViewPageState extends State<OpenOrdersViewPage> {
   final navController = ScreenNavController();
+  late Future<List<Map<String, dynamic>>> ordersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // load Orders
+    ordersFuture = loadOrders();
+  }
+
+  Future<List<Map<String, dynamic>>> loadOrders() async {
+    try {
+      final loadOrders = await OrdersManager().getOpenOrders();
+      return loadOrders;
+    } catch (e) {
+      print('Error fetching orders: $e');
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +45,28 @@ class _OpenOrdersViewPageState extends State<OpenOrdersViewPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                  onTap: () {
-                    navController.goBack();
-                  },
-                  child: SizedBox(
-                      width: 50, // Adjust the width and height as needed.
-                      height: 50,
-                      child: Image.asset(
-                        'assets/images/backicon.png', // Replace with your asset path.
-                        fit: BoxFit.contain,
-                      ))) // Adjust the fit as needed.
-              ,
+                onTap: () {
+                  navController.goBack();
+                },
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Image.asset(
+                    'assets/images/backicon.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
               Center(
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 250, // Adjust the width and height as needed.
+                      width: 250,
                       height: 250,
                       child: Hero(
                         tag: 'bakeryLogo',
                         child: Image.asset(
-                          'assets/images/bakery_logo.png', // Replace with your asset path.
+                          'assets/images/bakery_logo.png',
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -58,6 +79,51 @@ class _OpenOrdersViewPageState extends State<OpenOrdersViewPage> {
                     ),
                   ],
                 ),
+              ),
+              FutureBuilder<List<Map<String, dynamic>>>(
+                future: ordersFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    // Delayed empty message and navigation
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (mounted) {
+                        // Check if the widget is still mounted
+                        Navigator.of(context).pop(); // Go back to previous page
+                      }
+                    });
+                    return const Center(
+                      child: Text(
+                        'A lista está vazia. Você será redirecionado para a tela anterior.',
+                      ),
+                    );
+                  } else {
+                    final orders = snapshot.data!;
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: orders.length,
+                        itemBuilder: (context, index) {
+                          final order = orders[index];
+                          return Card(
+                            color: const Color(0xFFC68958),
+                            child: InkWell(
+                              onTap: () {},
+                              child: ListTile(
+                                title: Text(
+                                    'PEDIDO: ${order['orderId'].toString()}'),
+                                subtitle: Text(
+                                    'COMANDA DIG.: ${order['digCommand'].toString()}'),
+                                trailing:
+                                    Text('LOCAL: ${order['table'].toString()}'),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),

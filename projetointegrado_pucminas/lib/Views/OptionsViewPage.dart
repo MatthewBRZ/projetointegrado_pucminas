@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:projetointegrado_pucminas/Models/OrdersManager.dart';
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 import 'package:projetointegrado_pucminas/Views/OpenOrdersViewPage.dart';
-
 import '../Controllers/ScreenNavController.dart';
 import '../Models/Auth.dart';
 import '../Utils/DefaultText.dart';
@@ -70,6 +70,7 @@ class _OptionsViewPageState extends State<OptionsViewPage> {
                           onPressed: () {
                             navController
                                 .navigateToScreen(const OpenOrdersViewPage());
+                            OrdersManager().getOpenOrders();
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(300, 50),

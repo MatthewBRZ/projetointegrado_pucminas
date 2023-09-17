@@ -1,24 +1,47 @@
-import 'Order.dart';
-import 'Status.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 
 class OrdersManager {
-  final List<Order> orders;
+  Future<List<Map<String, dynamic>>> getOpenOrders() async {
+    final orders = <Map<String, dynamic>>[];
+    int lastOrder;
 
-  OrdersManager({
-    required this.orders,
-  });
+    try {
+      final ordersDocRef = firestore.FirebaseFirestore.instance
+          .collection('bakeryTicketSystemDB')
+          .doc('Orders');
 
-  List<Order> getOpenOrders() {
-    return orders.where((order) => order.status == Status.NA_FILA).toList();
+      final docSnapshot = await ordersDocRef.get();
+      final data = docSnapshot.data() as Map<String, dynamic>;
+      lastOrder = (data['latestOrderId']);
+
+      for (int i = 0; i <= lastOrder; i++) {
+        final ordersNumbers = firestore.FirebaseFirestore.instance
+            .collection('/bakeryTicketSystemDB/')
+            .doc('Orders')
+            .collection(i.toString());
+
+        final querySnapshot =
+            await ordersNumbers.get(); // Wait for the query to complete
+
+        final ordersList =
+            querySnapshot.docs; // This contains a list of QueryDocumentSnapshot
+
+        // You can iterate through the list and access the data for each document
+        for (final doc in ordersList) {
+          final data = doc.data() as Map<String, dynamic>;
+          //final order = ordermodel.Order.fromMap(data); // Use factory constructor
+          orders.add(data);
+        }
+      }
+      print(orders);
+    } catch (e) {
+      print('Error fetching orders: $e');
+    }
+
+    return orders;
   }
 
-  List<Order> getOngoingOrders() {
-    return orders
-        .where((order) => order.status == Status.EM_ATENDIMENTO)
-        .toList();
-  }
+  void getOngoingOrders() {}
 
-  List<Order> getClosedOrders() {
-    return orders.where((order) => order.status == Status.ENCERRADO).toList();
-  }
+  void getClosedOrders() {}
 }

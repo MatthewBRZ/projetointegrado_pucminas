@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import 'package:projetointegrado_pucminas/Models/Product.dart';
 import 'package:projetointegrado_pucminas/Utils/CartinfoHeader.dart';
 import 'package:projetointegrado_pucminas/Utils/ProductCatalog.dart';
+import 'package:restart_app/restart_app.dart';
 import '../Controllers/ScreenNavController.dart';
 import '../Models/Cart.dart';
 import '../Models/Client.dart';
 import '../Utils/CartBottomBar.dart';
 import '../Utils/DefaultText.dart';
-import 'HomeViewPage.dart';
 
 final GlobalKey<_CartViewPageState> cartViewPageKey =
     GlobalKey<_CartViewPageState>();
@@ -46,7 +46,8 @@ class _CartViewPageState extends State<CartViewPage> {
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 navController.goBack();
-                navController.removeAllAndPush(const HomeViewPage());
+                //navController.removeAllAndPush(const HomeViewPage());
+                Restart.restartApp();
               },
               child: const Text('Pagina Principal'),
             ),

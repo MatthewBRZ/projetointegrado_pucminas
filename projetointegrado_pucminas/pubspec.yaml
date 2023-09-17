@@ -42,6 +42,7 @@ dependencies:
   mobile_scanner: ^3.4.1
   get: ^4.6.6
   intl: ^0.18.1
+  restart_app: ^1.2.1
 
 dev_dependencies:
   flutter_test:

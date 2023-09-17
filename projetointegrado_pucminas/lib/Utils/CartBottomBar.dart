@@ -1,12 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:projetointegrado_pucminas/Models/Attendant.dart';
 import 'package:projetointegrado_pucminas/Models/Client.dart';
 import 'package:projetointegrado_pucminas/Models/Order.dart';
-import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 import '../Models/Cart.dart';
 import '../Views/CartViewPage.dart';
 import 'DefaultText.dart';
