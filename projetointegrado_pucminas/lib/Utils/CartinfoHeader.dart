@@ -4,6 +4,7 @@ import '../Models/Client.dart';
 import '../Controllers/CartInfoHeaderController.dart';
 import 'DefaultText.dart';
 
+// Custom Widget to display info in the CartView Header portion of the page
 class CartInfoHeader extends StatelessWidget {
   final CartInfoHeaderController cartInfoController =
       Get.find<CartInfoHeaderController>();

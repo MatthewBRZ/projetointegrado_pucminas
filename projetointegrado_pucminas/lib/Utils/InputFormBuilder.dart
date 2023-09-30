@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Custom Generic InputForm Builder
 class InputFormBuilder extends StatelessWidget {
   final GlobalKey<FormState> form = GlobalKey<FormState>();
   final String? Function(String?)? validatorCallback;

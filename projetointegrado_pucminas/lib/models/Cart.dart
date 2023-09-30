@@ -16,10 +16,7 @@ class Cart extends GetxController {
 
     if (existingIndex != -1) {
       // If the item is already in the cart, update its quantity
-      modifyItem(
-          //existingIndex, newItem.quantity + items[existingIndex].quantity);
-          existingIndex,
-          items[existingIndex].quantity + 1);
+      modifyItem(existingIndex, items[existingIndex].quantity + 1);
     } else {
       // If the item is not in the cart, add it as a new item
       items.add(newItem);
@@ -52,6 +49,7 @@ class Cart extends GetxController {
     }
   }
 
+  // Get cart Total price
   double getTotal() {
     double total = 0;
 
@@ -62,6 +60,7 @@ class Cart extends GetxController {
     return total;
   }
 
+  // Save the order items to cart
   void saveCart() {
     itemsPlaced.addAll(items);
   }

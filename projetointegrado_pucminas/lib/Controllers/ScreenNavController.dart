@@ -25,6 +25,7 @@ class ScreenNavController {
     navigatorKey.currentState!.pop();
   }
 
+  // Remove all screens and push one specific
   void removeAllAndPush(Widget screen) {
     navigatorKey.currentState!.pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => screen),

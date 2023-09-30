@@ -4,6 +4,7 @@ import 'package:projetointegrado_pucminas/Utils/BakeryInfoWidget.dart';
 import 'package:projetointegrado_pucminas/Views/LoginViewPage.dart';
 import 'package:projetointegrado_pucminas/Views/QrCodeViewPage.dart';
 
+// Main application Page
 class HomeViewPage extends StatefulWidget {
   const HomeViewPage({super.key});
 

@@ -9,10 +9,12 @@ class Auth {
   final attendant = Get.find<Attendant>();
   final navController = ScreenNavController();
 
+  // Try to authenticate the user
   Future<bool> authenticate(String uid, String pass) async {
     try {
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
+        // Auto complete e-mail auth
         email: '$uid@bakery.app',
         password: pass,
       );
@@ -20,7 +22,7 @@ class Auth {
       attendant.id = int.parse(uid);
 
       if (user != null) {
-        // Authentication successful, navigate to the next screen here
+        // Authentication successful, navigate to the next screen
         navController.navigateToScreen(const OptionsViewPage());
         return true;
       }
@@ -28,9 +30,10 @@ class Auth {
       // Handle authentication errors and print for debug purposes
       print('Error: $e');
     }
-    return false; // Return false in case of any errors
+    return false; // Return false in case of errors
   }
 
+  // Logout from firebase
   Future<void> signOut() async {
     await _auth.signOut();
   }

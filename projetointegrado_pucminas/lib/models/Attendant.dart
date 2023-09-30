@@ -9,6 +9,7 @@ class Attendant extends GetxController {
     required this.name,
   });
 
+  // Getters and setters
   int get getId => id;
   String get getName => name;
 
@@ -18,5 +19,11 @@ class Attendant extends GetxController {
 
   set setName(String newName) {
     name = newName;
+  }
+
+  // Reset to default
+  reset() {
+    id = 0;
+    name = 'A ser definido';
   }
 }

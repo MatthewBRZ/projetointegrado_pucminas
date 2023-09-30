@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Custom widget to display info at the main Page
 class BakeryInfoWidget extends StatelessWidget {
   final String street, city, phone1, phone2;
   final double fontSize;

@@ -6,10 +6,11 @@ import 'package:projetointegrado_pucminas/Controllers/ScreenNavController.dart';
 import 'package:projetointegrado_pucminas/Models/CartItem.dart';
 import 'package:projetointegrado_pucminas/Views/CartViewPage.dart';
 import '../Models/Cart.dart';
+import '../Models/Menu.dart';
 import '../Models/Product.dart';
 import '../Utils/DefaultText.dart';
-import '../Utils/ProductCatalog.dart';
 
+// Client Menu page with all products listed on the Database
 class MenuViewPage extends StatefulWidget {
   const MenuViewPage({super.key});
 
@@ -20,20 +21,24 @@ class MenuViewPage extends StatefulWidget {
 class _MenuViewPageState extends State<MenuViewPage> {
   final navController = ScreenNavController();
   final inputController = InputControllers();
-  final List<Product> products = productCatalog;
+  late List<Product> products;
   final Cart clientCart = Get.find<Cart>();
+  late Future<List<Product>> menuFuture;
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
+
+    // load Orders Function
+    menuFuture = Menu().loadMenu();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      // Prevent going back a page to avoid system disruption as the client already logged in
+      // Prevent going back a page to avoid system disruption as the client is already logged in
       onWillPop: () async {
         // Pop a message to the user to tell them they can't go back
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -61,32 +66,38 @@ class _MenuViewPageState extends State<MenuViewPage> {
                   child: Column(
                     children: [
                       SizedBox(
-                        width: 250, // Adjust the width and height as needed.
+                        width: 250,
                         height: 250,
                         child: Hero(
                           tag: 'bakeryLogo',
                           child: Image.asset(
-                            'assets/images/bakery_logo.png', // Replace with your asset path.
+                            'assets/images/bakery_logo.png',
                             fit: BoxFit.contain,
                           ),
                         ),
                       ),
                       DefaultText(text: 'CARDÁPIO DIGITAL', fontSize: 20),
                       const SizedBox(height: 20),
+                      const Divider(
+                        color: Color(0xFFC68958),
+                        thickness: 10,
+                      ),
                     ],
                   ),
                 ),
-                const Divider(
-                  color: Color(0xFFC68958),
-                  thickness: 10,
-                ),
-                products.isEmpty
-                    ? const CircularProgressIndicator() // Placeholder for loading state
-                    : Expanded(
+                // List of products loaded from the database
+                FutureBuilder<List<Product>>(
+                  future: menuFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      final catalogItem = snapshot.data!;
+                      return Expanded(
                         child: ListView.builder(
-                          itemCount: products.length,
+                          itemCount: catalogItem.length,
                           itemBuilder: (context, index) {
-                            final product = products[index];
+                            final product = catalogItem[index];
                             return Card(
                               color: const Color(0xFFC68958),
                               child: InkWell(
@@ -109,7 +120,10 @@ class _MenuViewPageState extends State<MenuViewPage> {
                             );
                           },
                         ),
-                      )
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ),

@@ -12,7 +12,7 @@ import 'package:projetointegrado_pucminas/Controllers/CartInfoHeaderController.d
 import 'package:projetointegrado_pucminas/Views/HomeViewPage.dart';
 
 void main() async {
-  // Set up firebase
+  // Set up firebase for web application
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.web,
@@ -34,13 +34,13 @@ class MyApp extends StatelessWidget {
   // Initializing nav controller
   final navigationController = ScreenNavController();
 
-  // This widget is the root of your application.
+  // Root of the application
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       // initialize controller navigator
       navigatorKey: navigationController.navigatorKey,
-      // For debugging reasons do not show banner
+      // Hide Debbuging Banner
       debugShowCheckedModeBanner: false,
       // Theme Color Set
       theme: ThemeData(
@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
+      // HomeViewPage as the app main page
       home: const HomeViewPage(),
     );
   }

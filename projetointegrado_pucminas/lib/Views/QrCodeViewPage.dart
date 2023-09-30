@@ -7,6 +7,7 @@ import 'package:projetointegrado_pucminas/Controllers/TableController.dart';
 import 'package:projetointegrado_pucminas/Utils/DefaultText.dart';
 import 'package:projetointegrado_pucminas/Views/IdentificationViewPage.dart';
 
+// Qr Code reader Screen
 class QrCodeViewPage extends StatefulWidget {
   const QrCodeViewPage({super.key});
 
@@ -51,24 +52,23 @@ class _QrCodeViewPageState extends State<QrCodeViewPage> {
                   dispose();
                 },
                 child: SizedBox(
-                    width: 50, // Adjust the width and height as needed.
+                    width: 50,
                     height: 50,
                     child: Image.asset(
                       'assets/images/backicon.png', // Replace with your asset path.
                       fit: BoxFit.contain,
-                    ))) // Adjust the fit as needed.
-            ,
+                    ))),
             Center(
               child: Column(
                 children: [
                   InkWell(
                       child: SizedBox(
-                          width: 250, // Adjust the width and height as needed.
+                          width: 250,
                           height: 250,
                           child: Hero(
                             tag: 'bakeryLogo',
                             child: Image.asset(
-                              'assets/images/bakery_logo.png', // Replace with your asset path.
+                              'assets/images/bakery_logo.png',
                               fit: BoxFit.contain,
                             ),
                           ))),
@@ -76,12 +76,12 @@ class _QrCodeViewPageState extends State<QrCodeViewPage> {
                   const SizedBox(height: 10),
                   // Sized box to scan QR CODE
                   SizedBox(
-                    width: 250, // Adjust the width as needed.
-                    height: 250, // Adjust the height as needed.
+                    width: 250,
+                    height: 250,
                     child: MobileScanner(
                       controller: qrCodeController.controller,
                       onDetect: (qrcode) {
-                        // Get the last readable qr code and assess it
+                        // Get the last readable qr code and verify it
                         if (tableController.checkTable(qrcode
                             .barcodes[qrcode.barcodes.length - 1].rawValue
                             .toString())) {

@@ -9,9 +9,10 @@ import '../Models/Cart.dart';
 import '../Views/CartViewPage.dart';
 import 'DefaultText.dart';
 
-// Unique digCommand identifier
+// First Initial Unique digCommand identifier
 int digCommand = Random().nextInt(10000);
 
+// Custom Widget to display info and Buttons at the bottom of the cartViewPage
 class CartBottomBar extends StatelessWidget {
   final Cart cart = Get.find<Cart>();
   final Client client = Get.find<Client>();
@@ -111,6 +112,9 @@ class CartBottomBar extends StatelessWidget {
                       ));
                     } else {
                       cartViewPageKey.currentState!.closeOrderMessage();
+                      // Generate another digCommand identifier for the next Order
+                      digCommand = Random().nextInt(10000);
+                      order.digCommand = digCommand;
                     }
                   },
                   style: ElevatedButton.styleFrom(

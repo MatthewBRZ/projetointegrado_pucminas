@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../Models/Status.dart';
 
 class CartInfoHeaderController extends GetxController {
@@ -15,6 +14,7 @@ class CartInfoHeaderController extends GetxController {
     this.attendantName = 'Nome do atendente',
   });
 
+  //Setters
   String get getDigCommand => digCommand;
   String get getLocalCommand => localCommand;
   String get getStatus => orderStatus;
@@ -47,5 +47,13 @@ class CartInfoHeaderController extends GetxController {
 
   set setAttendant(String newAttendant) {
     attendantName = newAttendant;
+  }
+
+  //Reset all values to default
+  reset() {
+    digCommand = 'Comanda Digital';
+    localCommand = 'Comanda Física';
+    orderStatus = 'Comanda Física';
+    attendantName = 'Nome do atendente';
   }
 }

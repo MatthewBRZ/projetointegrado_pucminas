@@ -7,6 +7,7 @@ import '../Models/Auth.dart';
 import '../Utils/DefaultText.dart';
 import '../Utils/FormValidator.dart';
 
+// Attendant Login Page
 class LoginViewPage extends StatefulWidget {
   const LoginViewPage({super.key});
 
@@ -31,7 +32,7 @@ class _LoginViewPageState extends State<LoginViewPage> {
         controller: userInput,
         hintText: 'ID',
         validatorCallback: (value) => formValidator.userValidator(value));
-    // PASS FORM
+    // Password Form
     passFormBuilder = InputFormBuilder(
         controller: passInput,
         hintText: 'SENHA',
@@ -56,24 +57,23 @@ class _LoginViewPageState extends State<LoginViewPage> {
                   navController.goBack();
                 },
                 child: SizedBox(
-                    width: 50, // Adjust the width and height as needed.
+                    width: 50,
                     height: 50,
                     child: Image.asset(
-                      'assets/images/backicon.png', // Replace with your asset path.
+                      'assets/images/backicon.png',
                       fit: BoxFit.contain,
-                    ))) // Adjust the fit as needed.
-            ,
+                    ))),
             Center(
               child: Column(
                 children: [
                   InkWell(
                       child: SizedBox(
-                          width: 250, // Adjust the width and height as needed.
+                          width: 250,
                           height: 250,
                           child: Hero(
                             tag: 'loginLogo',
                             child: Image.asset(
-                              'assets/images/login_logo.png', // Replace with your asset path.
+                              'assets/images/login_logo.png',
                               fit: BoxFit.contain,
                             ),
                           ))),

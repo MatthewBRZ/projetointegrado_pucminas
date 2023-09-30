@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:projetointegrado_pucminas/Models/Product.dart';
 import 'package:projetointegrado_pucminas/Utils/CartinfoHeader.dart';
-import 'package:projetointegrado_pucminas/Utils/ProductCatalog.dart';
-import 'package:restart_app/restart_app.dart';
+import '../Controllers/CartInfoHeaderController.dart';
+import '../Controllers/InputControllers.dart';
 import '../Controllers/ScreenNavController.dart';
+import '../Controllers/TableController.dart';
+import '../Models/Attendant.dart';
 import '../Models/Cart.dart';
 import '../Models/Client.dart';
 import '../Utils/CartBottomBar.dart';
 import '../Utils/DefaultText.dart';
+import 'HomeViewPage.dart';
 
+// Global State Key for external access to the View
 final GlobalKey<_CartViewPageState> cartViewPageKey =
     GlobalKey<_CartViewPageState>();
 
+// CartViewPage to display Cart information
 class CartViewPage extends StatefulWidget {
   CartViewPage() : super(key: cartViewPageKey);
 
@@ -22,16 +26,24 @@ class CartViewPage extends StatefulWidget {
 }
 
 class _CartViewPageState extends State<CartViewPage> {
+  // NavController for screen navigation
   final navController = ScreenNavController();
-  final List<Product> products = productCatalog;
-  final Cart cart = Get.find<Cart>();
-  final Client client = Get.find<Client>();
 
-  // Define a callback function to update the header
+  // initializing GetX states managers
+  Cart cart = Get.find<Cart>();
+  Client client = Get.find<Client>();
+  InputControllers inputControllers = Get.find<InputControllers>();
+  TableController tableController = Get.find<TableController>();
+  CartInfoHeaderController cartInfoHeaderController =
+      Get.find<CartInfoHeaderController>();
+  Attendant attendant = Get.find<Attendant>();
+
+  // Callback function to update the header
   void updateInfo() {
     setState(() {});
   }
 
+  // Close Order Function, executed Upon clicking "FECHAR COMANDA" from CartbottomBar
   void closeOrderMessage() {
     showDialog(
       context: context,
@@ -44,10 +56,19 @@ class _CartViewPageState extends State<CartViewPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
+                // Reset all getX States to default values
+                client.setName = '';
+                client.setTableNumber = 0;
+                client.setTableType = '';
+                cart.items.clear();
+                cart.itemsPlaced.clear();
+                inputControllers.clientIdController.clear();
+                cartInfoHeaderController.reset();
+                attendant.reset();
+
                 Navigator.of(context).pop(); // Close the dialog
-                navController.goBack();
-                //navController.removeAllAndPush(const HomeViewPage());
-                Restart.restartApp();
+                // Go to main page
+                navController.removeAllAndPush(const HomeViewPage());
               },
               child: const Text('Pagina Principal'),
             ),
@@ -128,6 +149,7 @@ class _CartViewPageState extends State<CartViewPage> {
                 ],
               ),
             ),
+            // Cart Items List
             Expanded(
               child: ListView.builder(
                 itemCount: cart.items.length,
@@ -145,7 +167,6 @@ class _CartViewPageState extends State<CartViewPage> {
                             symbol: 'R\$',
                           ).format(product.item.price * product.quantity)),
                         ),
-                        // Add a second row here
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

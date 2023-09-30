@@ -10,12 +10,4 @@ class Product {
     required this.price,
     required this.id,
   });
-
-  // editName
-
-  // editDescription
-
-  // editPrice
-
-  // editId
 }

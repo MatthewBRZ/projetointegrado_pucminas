@@ -3,6 +3,7 @@ import 'package:projetointegrado_pucminas/Models/OrdersManager.dart';
 import '../Controllers/ScreenNavController.dart';
 import '../Utils/DefaultText.dart';
 
+// Open Orders Screen
 class OpenOrdersViewPage extends StatefulWidget {
   const OpenOrdersViewPage({Key? key}) : super(key: key);
 
@@ -18,18 +19,8 @@ class _OpenOrdersViewPageState extends State<OpenOrdersViewPage> {
   void initState() {
     super.initState();
 
-    // load Orders
-    ordersFuture = loadOrders();
-  }
-
-  Future<List<Map<String, dynamic>>> loadOrders() async {
-    try {
-      final loadOrders = await OrdersManager().getOpenOrders();
-      return loadOrders;
-    } catch (e) {
-      print('Error fetching orders: $e');
-      return [];
-    }
+    // load Open Orders
+    ordersFuture = OrdersManager().getOpenOrders();
   }
 
   @override
@@ -95,7 +86,7 @@ class _OpenOrdersViewPageState extends State<OpenOrdersViewPage> {
                     });
                     return const Center(
                       child: Text(
-                        'A lista está vazia. Você será redirecionado para a tela anterior.',
+                        'A lista de pedidos está vazia. Você será redirecionado para a tela anterior.',
                       ),
                     );
                   } else {

@@ -6,6 +6,7 @@ import '../Controllers/ScreenNavController.dart';
 import '../Models/Auth.dart';
 import '../Utils/DefaultText.dart';
 
+// Options Screen for Attendants
 class OptionsViewPage extends StatefulWidget {
   const OptionsViewPage({super.key});
 
@@ -48,12 +49,12 @@ class _OptionsViewPageState extends State<OptionsViewPage> {
                   child: Column(
                     children: [
                       SizedBox(
-                        width: 250, // Adjust the width and height as needed.
+                        width: 250,
                         height: 250,
                         child: Hero(
                           tag: 'bakeryLogo',
                           child: Image.asset(
-                            'assets/images/bakery_logo.png', // Replace with your asset path.
+                            'assets/images/bakery_logo.png',
                             fit: BoxFit.contain,
                           ),
                         ),

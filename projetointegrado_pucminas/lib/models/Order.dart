@@ -42,7 +42,7 @@ class Order {
 
   Future<bool> createOrder() async {
     try {
-      // Retrieve the latest order number
+      // Retrieve the latest order number from db
       final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
       final latestOrderIdSnapshot = await latestOrderIdDoc.get();
       orderId = latestOrderIdSnapshot.exists
@@ -84,7 +84,7 @@ class Order {
         itemIndex++;
       }
 
-      //Update Cart Header Info
+      //Update Cart Header information
       cartInfoController.setDigCommand = digCommand.toString();
       cartInfoController.setLocalCommand = localCommand.toString();
       cartInfoController.setOrderStatus = status;
@@ -93,7 +93,7 @@ class Order {
       // Clear the cart for new orders
       cart.items.clear();
 
-      // Update Cart View
+      // Update Cart View Information
       cartViewPageKey.currentState!.updateInfo();
 
       // Keep track of the first client Order Id
@@ -115,11 +115,10 @@ class Order {
   Future<bool> closeOrder() async {
     try {
       // Check if there is a order placed by Client
-      if (firstId != 0) {
+      if (firstId != 0 && cart.itemsPlaced.isNotEmpty) {
         cart.items.clear();
         cart.items.addAll(cart.itemsPlaced);
         cartViewPageKey.currentState!.updateInfo();
-        print(total);
 
         // Increment the order number
         orderId++;

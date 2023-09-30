@@ -8,6 +8,7 @@ import 'package:projetointegrado_pucminas/Utils/FormValidator.dart';
 import 'package:projetointegrado_pucminas/Utils/InputFormBuilder.dart';
 import 'package:projetointegrado_pucminas/Views/MenuViewPage.dart';
 
+// Client Identification Page
 class IdentificationViewPage extends StatefulWidget {
   const IdentificationViewPage({super.key});
 

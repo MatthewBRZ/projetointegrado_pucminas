@@ -6,11 +6,13 @@ class InputControllers extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController clientIdController = TextEditingController();
 
+  // Dispose Login Controllers
   void disposelogin() {
     userNameController.dispose();
     passwordController.dispose();
   }
 
+  // Disspose Client Controler
   void disposeClient() {
     clientIdController.dispose();
   }

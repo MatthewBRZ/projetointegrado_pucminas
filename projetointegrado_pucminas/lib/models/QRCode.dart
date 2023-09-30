@@ -10,14 +10,14 @@ class QRCode {
     required this.data,
   });
 
+  // Validate the QR Code. If QR Code is valid, set client data related to table from the qr code readed
   bool validateQRCode(String scannedTable) {
     for (var table in BAKERY.values) {
       if (table.toString() == scannedTable) {
         client.setTableType = table.toString().split('_').first.split('.').last;
         client.setTableNumber = int.parse(table.toString().split('_').last);
         QRCode(data: scannedTable);
-        // tableNumber = table.toString().split('_').last;
-        // tableType = table.toString().split('_').first.split('.').last;
+
         return true;
       }
     }
