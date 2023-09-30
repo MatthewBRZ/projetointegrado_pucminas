@@ -42,7 +42,7 @@ class Order {
 
   Future<bool> createOrder() async {
     try {
-      // Retrieve the latest order number from db
+      // Retrieve the latest order number from db, if there is no orders put 1
       final latestOrderIdDoc = firestore.doc('bakeryTicketSystemDB/Orders/');
       final latestOrderIdSnapshot = await latestOrderIdDoc.get();
       orderId = latestOrderIdSnapshot.exists
@@ -136,7 +136,19 @@ class Order {
     }
   }
 
-  void deleteOrder() {}
+// Delete order from database
+  static Future<void> deleteOrder(String orderId) async {
+    try {
+      firestore
+          .collection('bakeryTicketSystemDB')
+          .doc('Orders')
+          .collection(orderId)
+          .doc('Cart')
+          .delete();
+    } catch (e) {
+      print('Error deleting order and its collection: $e');
+    }
+  }
 
   void editOrder() {}
 

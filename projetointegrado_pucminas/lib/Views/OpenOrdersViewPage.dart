@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetointegrado_pucminas/Models/OrdersManager.dart';
 import '../Controllers/ScreenNavController.dart';
+import '../Models/Order.dart';
 import '../Utils/DefaultText.dart';
 
 // Open Orders Screen
@@ -100,13 +101,38 @@ class _OpenOrdersViewPageState extends State<OpenOrdersViewPage> {
                             color: const Color(0xFFC68958),
                             child: InkWell(
                               onTap: () {},
-                              child: ListTile(
-                                title: Text(
-                                    'PEDIDO: ${order['orderId'].toString()}'),
-                                subtitle: Text(
-                                    'COMANDA DIG.: ${order['digCommand'].toString()}'),
-                                trailing:
-                                    Text('LOCAL: ${order['table'].toString()}'),
+                              child: Container(
+                                height: 100,
+                                child: Stack(
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                          'PEDIDO: ${order['orderId'].toString()}'),
+                                      subtitle: Text(
+                                          'COMANDA DIG.: ${order['digCommand'].toString()}'),
+                                      trailing: Text(
+                                          'LOCAL: ${order['table'].toString()}'),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          // Delete the Order from database
+                                          Order.deleteOrder(
+                                              order['orderId'].toString());
+                                          setState(() {
+                                            orders.removeAt(index);
+                                          });
+                                        },
+                                        icon: Image.asset(
+                                          'assets/images/trashicon.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
